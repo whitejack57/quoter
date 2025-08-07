@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Hauling Quote Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Instant Quote Generator</h1>
+        <form id="quoteForm">
+            <label for="pickup">Pickup ZIP Code:</label>
+            <input type="text" id="pickup" name="pickup" required>
+
+            <label for="dropoff">Drop-off ZIP Code:</label>
+            <input type="text" id="dropoff" name="dropoff" required>
+
+            <label for="vehicleType">Vehicle Type:</label>
+            <select id="vehicleType" name="vehicleType" required>
+                <option value="standard">Standard Car</option>
+                <option value="suv">Large SUV</option>
+                <option value="truck">Truck or Oversized</option>
+            </select>
+
+            <button type="submit">Get Quote</button>
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
