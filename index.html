@@ -1,53 +1,38 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Instant Quote Generator</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f7f7f7;
-      padding: 40px;
+      margin: 2em;
+      background: #f5f5f5;
     }
     .container {
       background: #fff;
-      padding: 20px 30px;
-      max-width: 500px;
-      margin: 0 auto;
+      padding: 2em;
       border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
     h1 {
-      font-size: 24px;
-      margin-bottom: 20px;
+      text-align: center;
     }
     label {
-      font-weight: bold;
       display: block;
-      margin-top: 15px;
+      margin-top: 1em;
     }
     input, select, button {
       width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      padding: 0.5em;
+      margin-top: 0.5em;
+      font-size: 1em;
     }
-    button {
-      margin-top: 20px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-    #result {
-      margin-top: 20px;
-      font-size: 16px;
+    #quoteOutput {
+      margin-top: 1.5em;
       font-weight: bold;
     }
   </style>
@@ -55,25 +40,22 @@
 <body>
   <div class="container">
     <h1>Instant Quote Generator</h1>
-    <form id="quote-form">
-      <label for="pickup">Pickup ZIP Code:</label>
-      <input type="text" id="pickup" required />
+    <label for="pickup">Pickup ZIP Code:</label>
+    <input type="text" id="pickup" placeholder="e.g. 90210" />
 
-      <label for="dropoff">Drop-off ZIP Code:</label>
-      <input type="text" id="dropoff" required />
+    <label for="dropoff">Drop-off ZIP Code:</label>
+    <input type="text" id="dropoff" placeholder="e.g. 10001" />
 
-      <label for="vehicle-type">Vehicle Type:</label>
-      <select id="vehicle-type">
-        <option value="Standard Car">Standard Car</option>
-        <option value="SUV">SUV</option>
-        <option value="Large SUV">Large SUV</option>
-        <option value="Truck">Truck</option>
-      </select>
+    <label for="vehicle">Vehicle Type:</label>
+    <select id="vehicle">
+      <option value="Standard Car">Standard Car</option>
+      <option value="Large SUV">Large SUV</option>
+      <option value="Pickup Truck">Pickup Truck</option>
+      <option value="Luxury">Luxury</option>
+    </select>
 
-      <button type="submit">Get Quote</button>
-    </form>
-
-    <div id="result"></div>
+    <button id="getQuote">Get Quote</button>
+    <div id="quoteOutput"></div>
   </div>
 
   <script src="script.js"></script>

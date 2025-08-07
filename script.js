@@ -1,63 +1,35 @@
+document.getElementById("getQuote").addEventListener("click", function () {
+  const pickup = document.getElementById("pickup").value;
+  const dropoff = document.getElementById("dropoff").value;
+  const vehicleType = document.getElementById("vehicle").value;
 
-function calculateDistance(fromZip, toZip) {
-  const apiKey = "YOUR_GOOGLE_API_KEY"; // Replace with your real key
-  const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${fromZip}&destinations=${toZip}&units=imperial&key=${apiKey}`;
+  const vehicleMultiplier = {
+    "Standard Car": 1,
+    "Large SUV": 1.25,
+    "Pickup Truck": 1.3,
+    "Luxury": 1.5
+  };
 
-  return fetch(url)
-    .then(response => response.json())
+  const ratePerMile = 0.85;
+  const minQuote = 500;
+
+  const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${pickup}&destinations=${dropoff}&key=AIzaSyAnRp1BXgPb2ayK2V8Hg00CqaYVjs1h_uw`;
+
+  fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`)
+    .then(res => res.json())
     .then(data => {
-      if (data.status === "OK" && data.rows[0].elements[0].status === "OK") {
-        const distanceText = data.rows[0].elements[0].distance.text;
-        const distanceMiles = parseFloat(distanceText.replace(/[^0-9.]/g, ''));
-        return distanceMiles;
-      } else {
-        throw new Error("Unable to get distance from Google Maps API.");
-      }
-    });
-}
+      const distanceMeters = data.rows[0].elements[0].distance.value;
+      const distanceMiles = distanceMeters / 1609.34;
 
-function getRatePerMile(distance) {
-  if (distance <= 500) return 1.5;
-  if (distance <= 1000) return 1.1;
-  if (distance <= 2000) return 0.95;
-  return 0.85;
-}
+      const baseQuote = distanceMiles * ratePerMile;
+      const multiplier = vehicleMultiplier[vehicleType] || 1;
+      const finalQuote = Math.max(minQuote, Math.round(baseQuote * multiplier));
 
-function getVehicleMultiplier(type) {
-  switch (type.toLowerCase()) {
-    case "suv":
-      return 1.15;
-    case "truck":
-    case "large suv":
-      return 1.25;
-    default:
-      return 1;
-  }
-}
-
-document.getElementById("quote-form").addEventListener("submit", function (e) {
-  e.preventDefault();
-
-  const pickupZip = document.getElementById("pickup").value.trim();
-  const dropoffZip = document.getElementById("dropoff").value.trim();
-  const vehicleType = document.getElementById("vehicle-type").value;
-
-  if (!pickupZip || !dropoffZip) {
-    alert("Please enter both ZIP codes.");
-    return;
-  }
-
-  calculateDistance(pickupZip, dropoffZip)
-    .then(distance => {
-      const rate = getRatePerMile(distance);
-      const multiplier = getVehicleMultiplier(vehicleType);
-      let quote = distance * rate * multiplier;
-      quote = Math.max(500, Math.round(quote)); // Ensure $500 minimum
-
-      document.getElementById("result").innerHTML = `Estimated Quote: <strong>$${quote}</strong> for ~${Math.round(distance)} miles.`;
+      document.getElementById("quoteOutput").innerHTML =
+        `Estimated Quote: <strong>$${finalQuote}</strong> for <strong>${Math.round(distanceMiles)} miles</strong>.`;
     })
-    .catch(error => {
-      console.error(error);
-      document.getElementById("result").innerHTML = "Error calculating quote. Please check ZIP codes.";
+    .catch(err => {
+      console.error(err);
+      document.getElementById("quoteOutput").innerHTML = "Error fetching quote.";
     });
 });
