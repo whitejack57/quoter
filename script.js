@@ -13,10 +13,12 @@ document.getElementById("getQuote").addEventListener("click", function () {
     const minQuote = 500;
 
     const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${pickup}&destinations=${dropoff}&key=AIzaSyAnRp1BXgPb2ayK2V8Hg00CqaYVjs1h_uw`;
+    console.log("Request URL:", url);
 
     fetch(url)
         .then(res => res.json())
         .then(data => {
+            console.log("API Response:", data);
             if (data.status !== "OK" || data.rows[0].elements[0].status !== "OK") {
                 document.getElementById("quoteOutput").innerHTML = `Error: ${data.error_message || "Unable to calculate distance. Please check ZIP codes."}`;
                 return;
