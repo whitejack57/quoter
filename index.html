@@ -2,34 +2,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car Hauling Quote Generator</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Instant Quote Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+      padding: 40px;
+    }
+    .container {
+      background: #fff;
+      padding: 20px 30px;
+      max-width: 500px;
+      margin: 0 auto;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      margin-top: 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+  </style>
 </head>
-<script src=AIzaSyAnRp1BXgPb2ayK2V8Hg00CqaYVjs1h_uw></script>    
 <body>
-    <div class="container">
-        <h1>Instant Quote Generator</h1>
-        <form id="quoteForm">
-            <label for="pickup">Pickup ZIP Code:</label>
-            <input type="text" id="pickup" name="pickup" required>
+  <div class="container">
+    <h1>Instant Quote Generator</h1>
+    <form id="quote-form">
+      <label for="pickup">Pickup ZIP Code:</label>
+      <input type="text" id="pickup" required />
 
-            <label for="dropoff">Drop-off ZIP Code:</label>
-            <input type="text" id="dropoff" name="dropoff" required>
+      <label for="dropoff">Drop-off ZIP Code:</label>
+      <input type="text" id="dropoff" required />
 
-            <label for="vehicleType">Vehicle Type:</label>
-            <select id="vehicleType" name="vehicleType" required>
-                <option value="standard">Standard Car</option>
-                <option value="suv">Large SUV</option>
-                <option value="truck">Truck or Oversized</option>
-            </select>
+      <label for="vehicle-type">Vehicle Type:</label>
+      <select id="vehicle-type">
+        <option value="Standard Car">Standard Car</option>
+        <option value="SUV">SUV</option>
+        <option value="Large SUV">Large SUV</option>
+        <option value="Truck">Truck</option>
+      </select>
 
-            <button type="submit">Get Quote</button>
-        </form>
-        <div id="result"></div>
-    </div>
+      <button type="submit">Get Quote</button>
+    </form>
 
-    <script src="script.js"></script>
+    <div id="result"></div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>

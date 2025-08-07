@@ -1,52 +1,63 @@
 
-document.getElementById("quoteForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-    const pickup = document.getElementById("pickup").value;
-    const dropoff = document.getElementById("dropoff").value;
-    const vehicleType = document.getElementById("vehicleType").value;
+function calculateDistance(fromZip, toZip) {
+  const apiKey = "YOUR_GOOGLE_API_KEY"; // Replace with your real key
+  const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${fromZip}&destinations=${toZip}&units=imperial&key=${apiKey}`;
 
-    const service = new google.maps.DistanceMatrixService();
-service.getDistanceMatrix(
-  {
-    origins: [pickup],
-    destinations: [dropoff],
-    travelMode: 'DRIVING',
-    unitSystem: google.maps.UnitSystem.IMPERIAL
-  },
-  function(response, status) {
-    if (status === 'OK') {
-      const distanceInMiles = response.rows[0].elements[0].distance.value / 1609.34;
-      let baseRate = 0;
+  return fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === "OK" && data.rows[0].elements[0].status === "OK") {
+        const distanceText = data.rows[0].elements[0].distance.text;
+        const distanceMiles = parseFloat(distanceText.replace(/[^0-9.]/g, ''));
+        return distanceMiles;
+      } else {
+        throw new Error("Unable to get distance from Google Maps API.");
+      }
+    });
+}
 
-      if (distanceInMiles <= 500) baseRate = 1.25;
-      else if (distanceInMiles <= 1000) baseRate = 1.00;
-      else if (distanceInMiles <= 2000) baseRate = 0.85;
-      else baseRate = 0.70;
+function getRatePerMile(distance) {
+  if (distance <= 500) return 1.5;
+  if (distance <= 1000) return 1.1;
+  if (distance <= 2000) return 0.95;
+  return 0.85;
+}
 
-      let multiplier = 1;
-      if (vehicleType === "suv") multiplier = 1.15;
-      else if (vehicleType === "truck") multiplier = 1.25;
-
-      const quote = Math.round(distanceInMiles * baseRate * multiplier);
-      document.getElementById("result").innerText = `Estimated Quote: $${quote} for ${distanceInMiles.toFixed(0)} miles.`;
-    } else {
-      document.getElementById("result").innerText = "Error calculating distance.";
-    }
+function getVehicleMultiplier(type) {
+  switch (type.toLowerCase()) {
+    case "suv":
+      return 1.15;
+    case "truck":
+    case "large suv":
+      return 1.25;
+    default:
+      return 1;
   }
-);
-    
-    let baseRate = 0;
+}
 
-    if (distance <= 500) baseRate = 1.25;
-    else if (distance <= 1000) baseRate = 1.00;
-    else if (distance <= 2000) baseRate = 0.85;
-    else baseRate = 0.70;
+document.getElementById("quote-form").addEventListener("submit", function (e) {
+  e.preventDefault();
 
-    let multiplier = 1;
-    if (vehicleType === "suv") multiplier = 1.15;
-    else if (vehicleType === "truck") multiplier = 1.25;
+  const pickupZip = document.getElementById("pickup").value.trim();
+  const dropoffZip = document.getElementById("dropoff").value.trim();
+  const vehicleType = document.getElementById("vehicle-type").value;
 
-    const quote = Math.round(distance * baseRate * multiplier);
+  if (!pickupZip || !dropoffZip) {
+    alert("Please enter both ZIP codes.");
+    return;
+  }
 
-    document.getElementById("result").innerText = `Estimated Quote: $${quote} for ~${distance} miles.`;
+  calculateDistance(pickupZip, dropoffZip)
+    .then(distance => {
+      const rate = getRatePerMile(distance);
+      const multiplier = getVehicleMultiplier(vehicleType);
+      let quote = distance * rate * multiplier;
+      quote = Math.max(500, Math.round(quote)); // Ensure $500 minimum
+
+      document.getElementById("result").innerHTML = `Estimated Quote: <strong>$${quote}</strong> for ~${Math.round(distance)} miles.`;
+    })
+    .catch(error => {
+      console.error(error);
+      document.getElementById("result").innerHTML = "Error calculating quote. Please check ZIP codes.";
+    });
 });
