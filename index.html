@@ -2,60 +2,63 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Instant Quote Generator</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 2em;
-      background: #f5f5f5;
+      background: #f9f9f9;
+      padding: 40px;
     }
     .container {
-      background: #fff;
-      padding: 2em;
-      border-radius: 8px;
       max-width: 500px;
       margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    h1 {
-      text-align: center;
-    }
-    label {
-      display: block;
-      margin-top: 1em;
     }
     input, select, button {
       width: 100%;
-      padding: 0.5em;
-      margin-top: 0.5em;
-      font-size: 1em;
+      padding: 10px;
+      margin: 12px 0;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 16px;
     }
-    #quoteOutput {
-      margin-top: 1.5em;
-      font-weight: bold;
+    button {
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      border: none;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    strong {
+      font-weight: 600;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Instant Quote Generator</h1>
-    <label for="pickup">Pickup ZIP Code:</label>
-    <input type="text" id="pickup" placeholder="e.g. 90210" />
-
-    <label for="dropoff">Drop-off ZIP Code:</label>
-    <input type="text" id="dropoff" placeholder="e.g. 10001" />
-
-    <label for="vehicle">Vehicle Type:</label>
+    <h2>Instant Quote Generator</h2>
+    <label>Pickup ZIP Code:</label>
+    <input type="text" id="pickup" placeholder="e.g. 75068" />
+    
+    <label>Drop-off ZIP Code:</label>
+    <input type="text" id="dropoff" placeholder="e.g. 11235" />
+    
+    <label>Vehicle Type:</label>
     <select id="vehicle">
       <option value="Standard Car">Standard Car</option>
       <option value="Large SUV">Large SUV</option>
       <option value="Pickup Truck">Pickup Truck</option>
       <option value="Luxury">Luxury</option>
     </select>
-
+    
     <button id="getQuote">Get Quote</button>
-    <div id="quoteOutput"></div>
+    <p id="quoteOutput"></p>
   </div>
 
   <script src="script.js"></script>
