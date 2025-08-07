@@ -15,7 +15,7 @@ document.getElementById("getQuote").addEventListener("click", function () {
     const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${pickup}&destinations=${dropoff}&key=AIzaSyAnRp1BXgPb2ayK2V8Hg00CqaYVjs1h_uw`;
     console.log("Request URL:", url);
 
-    fetch(url)
+    fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`)
         .then(res => res.json())
         .then(data => {
             console.log("API Response:", data);
